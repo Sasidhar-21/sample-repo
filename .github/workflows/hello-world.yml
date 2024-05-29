@@ -35,6 +35,10 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
+      - name: Get current timestamp
+        id: get-timestamp
+        run: echo "TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
+
       # Using the port-labs GitHub Action
       - uses: port-labs/port-github-action@v1
         with:
@@ -49,6 +53,6 @@ jobs:
             {
               "buildStatus": "SUCCESS",
               "buildUrl": "string",
-              "timestamp": "",
+              "timestamp": $GITHUB_ENV,
               "buildDuration": 0
             }
