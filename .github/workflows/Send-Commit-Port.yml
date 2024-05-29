@@ -1,0 +1,29 @@
+name: Send Commit Info to GetPort
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      # Add steps to retrieve commit information here
+      # For example, you can use git commands like git log, git show, etc.
+      
+      - name: Send Commit Info to GetPort
+        env:
+          PORT_CLIENT_ID: ${{ secrets.PORT_CLIENT_ID }}
+          PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
+          GETPORT_BASE_URL: https://app.getport.io
+        run: |
+          # Construct your commit information payload
+          commit_info='{"commit": "${{ github.sha }}", "author": "${{ github.actor }}", "message": "${{ github.event.head_commit.message }}"}'
+          
+          # Send HTTP request to GetPort API
+          curl -X POST -H "Content-Type: application/json" -d "$commit_info" -u $PORT_CLIENT_ID:$PORT_CLIENT_SECRET $GETPORT_BASE_URL/api/commit
