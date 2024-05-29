@@ -2,8 +2,9 @@ name: Manage Pull Request
 
 on:
   push:
+    branches: ['Test']
     paths:
-      - '.github/workflows/manage-pr.yml'
+    - '.github/workflows/manage-pr.yml'
   workflow_dispatch:
     inputs:
       action: 
