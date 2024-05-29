@@ -49,6 +49,6 @@ jobs:
             {
               "buildStatus": "SUCCESS",
               "buildUrl": "string",
-              "timestamp": "2024-05-29T04:04:42.991Z",
+              "timestamp": "",
               "buildDuration": 0
             }
