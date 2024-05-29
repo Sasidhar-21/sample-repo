@@ -53,6 +53,6 @@ jobs:
             {
               "buildStatus": "SUCCESS",
               "buildUrl": "string",
-              "timestamp": $GITHUB_ENV,
+              "timestamp": GITHUB_ENV,
               "buildDuration": 0
             }
