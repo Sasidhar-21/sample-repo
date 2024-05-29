@@ -34,3 +34,21 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      # Using the port-labs GitHub Action
+      - uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          baseUrl: https://api.getport.io
+          operation: UPSERT
+          identifier: some_identifier
+          title: Some Title
+          blueprint: jenkinsBuild
+          properties: |-
+            {
+              "buildStatus": "SUCCESS",
+              "buildUrl": "string",
+              "timestamp": "2024-05-29T04:04:42.991Z",
+              "buildDuration": 0
+            }
