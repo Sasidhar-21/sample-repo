@@ -1,29 +1,39 @@
-name: Send Commit Info to GetPort
+name: Update Port with PR Information
 
 on:
-  push:
+  pull_request:
+    types: [opened, closed, reopened, synchronize]
     branches:
       - main
 
 jobs:
-  build:
+  update-port:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        
-      # Add steps to retrieve commit information here
-      # For example, you can use git commands like git log, git show, etc.
-      
-      - name: Send Commit Info to GetPort
-        env:
-          PORT_CLIENT_ID: ${{ secrets.PORT_CLIENT_ID }}
-          PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
-          GETPORT_BASE_URL: https://app.getport.io
-        run: |
-          # Construct your commit information payload
-          commit_info='{"commit": "${{ github.sha }}", "author": "${{ github.actor }}", "message": "${{ github.event.head_commit.message }}"}'
-          
-          # Send HTTP request to GetPort API
-          curl -X POST -H "Content-Type: application/json" -d "$commit_info" -u $PORT_CLIENT_ID:$PORT_CLIENT_SECRET $GETPORT_BASE_URL/api/commit
+
+      - name: Update Port with PR Information
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          baseUrl: https://api.getport.io
+          operation: UPSERT
+          identifier: ${{ github.event.pull_request.id }}
+          title: ${{ github.event.pull_request.title }}
+          blueprint: githubPullRequest
+          properties: |-
+            {
+              "creator": "${{ github.event.pull_request.user.login }}",
+              "assignees": ${{ toJson(github.event.pull_request.assignees.*.login) }},
+              "reviewers": ${{ toJson(github.event.pull_request.requested_reviewers.*.login) }},
+              "status": "${{ github.event.pull_request.state }}",
+              "closedAt": "${{ github.event.pull_request.closed_at }}",
+              "updatedAt": "${{ github.event.pull_request.updated_at }}",
+              "mergedAt": "${{ github.event.pull_request.merged_at }}",
+              "link": "${{ github.event.pull_request.html_url }}",
+              "author": "${{ github.event.pull_request.user.login }}",
+              "repository": "${{ github.repository }}"
+            }
