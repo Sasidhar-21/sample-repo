@@ -31,6 +31,21 @@ jobs:
           echo "PR_AUTHOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
           echo "PR_REPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
 
+      - name: Debug PR Variables
+        run: |
+          echo "PR_ID=${{ env.PR_ID }}"
+          echo "PR_TITLE=${{ env.PR_TITLE }}"
+          echo "PR_CREATOR=${{ env.PR_CREATOR }}"
+          echo "PR_ASSIGNEES=${{ env.PR_ASSIGNEES }}"
+          echo "PR_REVIEWERS=${{ env.PR_REVIEWERS }}"
+          echo "PR_STATUS=${{ env.PR_STATUS }}"
+          echo "PR_CLOSED_AT=${{ env.PR_CLOSED_AT }}"
+          echo "PR_UPDATED_AT=${{ env.PR_UPDATED_AT }}"
+          echo "PR_MERGED_AT=${{ env.PR_MERGED_AT }}"
+          echo "PR_LINK=${{ env.PR_LINK }}"
+          echo "PR_AUTHOR=${{ env.PR_AUTHOR }}"
+          echo "PR_REPOSITORY=${{ env.PR_REPOSITORY }}"
+
       - name: Update Port with PR Information
         uses: port-labs/port-github-action@v1
         with:
