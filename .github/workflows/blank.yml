@@ -15,57 +15,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set PR Variables
-        id: set-vars
-        run: |
-          echo "PR_ID=${{ github.event.pull_request.id }}" >> $GITHUB_ENV
-          echo "PR_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
-          echo "PR_CREATOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
-          echo "PR_ASSIGNEES=$(echo '${{ toJson(github.event.pull_request.assignees.*.login) }}' | jq -c .)" >> $GITHUB_ENV
-          echo "PR_REVIEWERS=$(echo '${{ toJson(github.event.pull_request.requested_reviewers.*.login) }}' | jq -c .)" >> $GITHUB_ENV
-          echo "PR_STATUS=${{ github.event.pull_request.state }}" >> $GITHUB_ENV
-          echo "PR_CLOSED_AT=${{ github.event.pull_request.closed_at }}" >> $GITHUB_ENV
-          echo "PR_UPDATED_AT=${{ github.event.pull_request.updated_at }}" >> $GITHUB_ENV
-          echo "PR_MERGED_AT=${{ github.event.pull_request.merged_at }}" >> $GITHUB_ENV
-          echo "PR_LINK=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
-          echo "PR_AUTHOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
-          echo "PR_REPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
-
-      - name: Debug PR Variables
-        run: |
-          echo "PR_ID=${{ env.PR_ID }}"
-          echo "PR_TITLE=${{ env.PR_TITLE }}"
-          echo "PR_CREATOR=${{ env.PR_CREATOR }}"
-          echo "PR_ASSIGNEES=${{ env.PR_ASSIGNEES }}"
-          echo "PR_REVIEWERS=${{ env.PR_REVIEWERS }}"
-          echo "PR_STATUS=${{ env.PR_STATUS }}"
-          echo "PR_CLOSED_AT=${{ env.PR_CLOSED_AT }}"
-          echo "PR_UPDATED_AT=${{ env.PR_UPDATED_AT }}"
-          echo "PR_MERGED_AT=${{ env.PR_MERGED_AT }}"
-          echo "PR_LINK=${{ env.PR_LINK }}"
-          echo "PR_AUTHOR=${{ env.PR_AUTHOR }}"
-          echo "PR_REPOSITORY=${{ env.PR_REPOSITORY }}"
-
       - name: Update Port with PR Information
         uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          baseUrl: https://app.getport.io
+          baseUrl: https://api.getport.io
           operation: UPSERT
-          identifier: ${{ env.PR_ID }}
-          title: ${{ env.PR_TITLE }}
+          identifier: githubPullRequest
+          title: Pull Request
           blueprint: githubPullRequest
-          properties: |
+          properties: |-
             {
-              "creator": "${{ env.PR_CREATOR }}",
-              "assignees": ${{ env.PR_ASSIGNEES }},
-              "reviewers": ${{ env.PR_REVIEWERS }},
-              "status": "${{ env.PR_STATUS }}",
-              "closedAt": "${{ env.PR_CLOSED_AT }}",
-              "updatedAt": "${{ env.PR_UPDATED_AT }}",
-              "mergedAt": "${{ env.PR_MERGED_AT }}",
-              "link": "${{ env.PR_LINK }}",
-              "author": "${{ env.PR_AUTHOR }}",
-              "repository": "${{ env.PR_REPOSITORY }}"
+              "creator": "string",
+              "assignees": [],
+              "reviewers": [],
+              "status": "merged",
+              "closedAt": "2024-05-30T06:14:31.251Z",
+              "updatedAt": "2024-05-30T06:14:31.251Z",
+              "mergedAt": "2024-05-30T06:14:31.251Z",
+              "link": "https://example.com",
+              "author": "string",
+              "repository": "string"
             }
+
+
+      
