@@ -34,25 +34,3 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-
-      - name: Get current timestamp
-        id: get-timestamp
-        run: echo "TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
-
-      # Using the port-labs GitHub Action
-      - uses: port-labs/port-github-action@v1
-        with:
-          clientId: ${{ secrets.PORT_CLIENT_ID }}
-          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          baseUrl: https://app.getport.io
-          operation: UPSERT
-          identifier: some_identifier
-          title: Some Title
-          blueprint: jenkinsBuild
-          properties: |-
-            {
-              "buildStatus": "SUCCESS",
-              "buildUrl": "string",
-              "timestamp": GITHUB_ENV,
-              "buildDuration": 0
-            }
