@@ -6,55 +6,6 @@ on:
     branches:
       - main
   workflow_dispatch:
-    inputs:
-      prId:
-        description: 'Pull Request ID'
-        required: true
-        type: string
-      prTitle:
-        description: 'Pull Request Title'
-        required: true
-        type: string
-      creator:
-        description: 'Creator'
-        required: true
-        type: string
-      assignees:
-        description: 'Assignees (comma-separated)'
-        required: true
-        type: string
-      reviewers:
-        description: 'Reviewers (comma-separated)'
-        required: true
-        type: string
-      status:
-        description: 'Status'
-        required: true
-        type: string
-      closedAt:
-        description: 'Closed At'
-        required: true
-        type: string
-      updatedAt:
-        description: 'Updated At'
-        required: true
-        type: string
-      mergedAt:
-        description: 'Merged At'
-        required: true
-        type: string
-      link:
-        description: 'Link'
-        required: true
-        type: string
-      author:
-        description: 'Author'
-        required: true
-        type: string
-      repository:
-        description: 'Repository'
-        required: true
-        type: string
 
 jobs:
   update-port:
