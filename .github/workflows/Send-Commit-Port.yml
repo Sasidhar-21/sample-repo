@@ -5,7 +5,6 @@ on:
     types: [opened, closed, reopened, synchronize]
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   update-port:
@@ -22,19 +21,19 @@ jobs:
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           baseUrl: https://api.getport.io
           operation: UPSERT
-          identifier: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prId || github.event.pull_request.id }}
-          title: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prTitle || github.event.pull_request.title }}
+          identifier: ${{ github.event.pull_request.id }}
+          title: ${{ github.event.pull_request.title }}
           blueprint: githubPullRequest
-          properties: |-
+          properties: |
             {
-              "creator": "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.creator || github.event.pull_request.user.login }}",
-              "assignees": ${{ github.event_name == 'workflow_dispatch' && toJson(github.event.inputs.assignees.split(',')) || toJson(github.event.pull_request.assignees.*.login) }},
-              "reviewers": ${{ github.event_name == 'workflow_dispatch' && toJson(github.event.inputs.reviewers.split(',')) || toJson(github.event.pull_request.requested_reviewers.*.login) }},
-              "status": "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.status || github.event.pull_request.state }}",
-              "closedAt": "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.closedAt || github.event.pull_request.closed_at }}",
-              "updatedAt": "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.updatedAt || github.event.pull_request.updated_at }}",
-              "mergedAt": "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.mergedAt || github.event.pull_request.merged_at }}",
-              "link": "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.link || github.event.pull_request.html_url }}",
-              "author": "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.author || github.event.pull_request.user.login }}",
-              "repository": "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repository || github.repository }}"
+              "creator": "${{ github.event.pull_request.user.login }}",
+              "assignees": ${{ toJson(github.event.pull_request.assignees.*.login) }},
+              "reviewers": ${{ toJson(github.event.pull_request.requested_reviewers.*.login) }},
+              "status": "${{ github.event.pull_request.state }}",
+              "closedAt": "${{ github.event.pull_request.closed_at }}",
+              "updatedAt": "${{ github.event.pull_request.updated_at }}",
+              "mergedAt": "${{ github.event.pull_request.merged_at }}",
+              "link": "${{ github.event.pull_request.html_url }}",
+              "author": "${{ github.event.pull_request.user.login }}",
+              "repository": "${{ github.repository }}"
             }
