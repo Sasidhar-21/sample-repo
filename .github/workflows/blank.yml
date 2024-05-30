@@ -5,6 +5,7 @@ on:
     types: [opened, closed, reopened, synchronize]
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   update-port:
