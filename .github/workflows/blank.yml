@@ -1,0 +1,39 @@
+name: Update Port with PR Information
+
+on:
+  pull_request:
+    types: [opened, closed, reopened, synchronize]
+    branches:
+      - main
+
+jobs:
+  update-port:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update Port with PR Information
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          baseUrl: https://api.getport.io
+          operation: UPSERT
+          identifier: ${{ github.event.pull_request.id }}
+          title: ${{ github.event.pull_request.title }}
+          blueprint: githubPullRequest
+          properties: |
+            {
+              "creator": "${{ github.event.pull_request.user.login }}",
+              "assignees": ${{ toJson(github.event.pull_request.assignees.*.login) }},
+              "reviewers": ${{ toJson(github.event.pull_request.requested_reviewers.*.login) }},
+              "status": "${{ github.event.pull_request.state }}",
+              "closedAt": "${{ github.event.pull_request.closed_at }}",
+              "updatedAt": "${{ github.event.pull_request.updated_at }}",
+              "mergedAt": "${{ github.event.pull_request.merged_at }}",
+              "link": "${{ github.event.pull_request.html_url }}",
+              "author": "${{ github.event.pull_request.user.login }}",
+              "repository": "${{ github.repository }}"
+            }
